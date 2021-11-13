@@ -1,0 +1,26 @@
+{
+    "name": "panda",
+    "displayName": "panda",
+    "description": "panda program language",
+    "version": "0.1.1",
+    "publisher": "sanghuacai",
+    "engines": {
+        "vscode": "^1.46.0"
+    },
+    "categories": [
+        "Programming Languages"
+    ],
+    "contributes": {
+        "languages": [{
+            "id": "panda",
+            "aliases": ["pd", "panda"],
+            "extensions": [".pd"],
+            "configuration": "./language-configuration.json"
+        }],
+        "grammars": [{
+            "language": "panda",
+            "scopeName": "source.pd",
+            "path": "./syntaxes/panda.tmLanguage.json"
+        }]
+    }
+}
