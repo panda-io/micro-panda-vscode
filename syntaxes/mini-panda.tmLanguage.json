@@ -1,5 +1,5 @@
 {
-	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+	"$schema": "https://raw.githubusercontent.com/panda-foundation/mini-panda-vscode-highlight/master/syntaxes/mini-panda.tmLanguage.json",
 	"name": "panda language syntax",
 	"scopeName": "source.pd",
 	"patterns": [
