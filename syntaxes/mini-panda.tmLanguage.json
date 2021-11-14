@@ -327,7 +327,7 @@
 			]
 		},
 		"struct": {
-			"begin": "(?=\\struct\\b)",
+			"begin": "(?=\\bstruct\\b)",
 			"end": "(?<=\\})",
 			"patterns": [
 				{
@@ -954,7 +954,7 @@
 			]
 		},
 		"type_builtin": {
-			"match": "\\b(bool|char|i8|i16|i32|i64|u8|u16|u32|u64|sbyte|short|int|long|byte|ushort|uint|ulong|f32|f64|float|double|string|void|pointer)\\b",
+			"match": "\\b(bool|char|i8|i16|i32|i64|u8|u16|u32|u64|f32|f64|void|pointer)\\b",
 			"captures": {
 				"1": {
 					"name": "keyword.type.mpd"
