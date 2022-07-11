@@ -1,5 +1,5 @@
 {
-	"$schema": "https://raw.githubusercontent.com/panda-foundation/mini-panda-vscode-highlight/master/syntaxes/mini-panda.tmLanguage.json",
+	"$schema": "https://raw.githubusercontent.com/panda-io/micro-panda-vscode-highlight/master/syntaxes/micro-panda.tmLanguage.json",
 	"name": "panda language syntax",
 	"scopeName": "source.mpd",
 	"patterns": [
@@ -16,7 +16,7 @@
 			"include": "#namespace"
 		},
 		{
-			"include": "#import"
+			"include": "#using"
 		},
 		{
 			"include": "#declarations"
@@ -167,40 +167,18 @@
 				}
 			]
 		},
-		"import": {
+		"using": {
+			"begin": "\\b(using)\\b\\s*",
+			"beginCaptures": {
+				"1": {
+					"name": "keyword.other.using.mpd"
+				}
+			},
+			"end": "(?=;)",
 			"patterns": [
 				{
-					"begin": "\\b(import)\\b\\s+([_[:alpha:]][_[:alnum:]]*)\\s*=",
-					"beginCaptures": {
-						"1": {
-							"name": "keyword.other.using.mpd"
-						},
-						"2": {
-							"name": "entity.name.type.alias.mpd"
-						}
-					},
-					"end": "(?=;)",
-					"patterns": [
-						{
-							"name": "entity.name.type.namespace.mpd",
-							"match": "[_[:alpha:]][_[:alnum:]]*"
-						}
-					]
-				},
-				{
-					"begin": "\\b(import)\\b\\s*",
-					"beginCaptures": {
-						"1": {
-							"name": "keyword.other.using.mpd"
-						}
-					},
-					"end": "(?=;)",
-					"patterns": [
-						{
-							"name": "entity.name.type.namespace.mpd",
-							"match": "[_[:alpha:]][_[:alnum:]]*"
-						}
-					]
+					"name": "entity.name.type.namespace.mpd",
+					"match": "[_[:alpha:]][_[:alnum:]]*"
 				}
 			]
 		},
