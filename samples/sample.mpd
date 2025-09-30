@@ -1,0 +1,37 @@
+// line comment
+/*
+block comment
+*/
+
+import math // package import, usage: math::min_i8(1, 2)
+import util.add_i8 // function (symbol) import, usage: add_i8(1, 2)
+
+import math as m // package import with alias, usage: m::min_i8(1, 2)
+import util.add_i8 as add // function (symbol) import with alias, usage: add(1, 2)
+
+package sample
+
+// primitives
+val i: i8 = 1
+val f: f32 = 1.0
+val b: bool = true
+
+// operators
+
+// expressions
+
+// statements
+
+// function
+
+// struct
+
+// enum
+
+// casting
+
+// union
+
+// collections
+
+// macro
