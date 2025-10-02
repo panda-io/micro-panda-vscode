@@ -1,6 +1,6 @@
 {
-	"$schema": "https://raw.githubusercontent.com/panda-io/micro-panda-vscode-highlight/master/syntaxes/micro-panda.tmLanguage.json",
-	"name": "panda language syntax",
+	"$schema": "https://raw.githubusercontent.com/panda-io/micro-panda-vscode/refs/heads/master/syntaxes/micro-panda.tmLanguage.json",
+	"name": "mirco panda language syntax",
 	"scopeName": "source.mpd",
 	"patterns": [
 		{
@@ -13,10 +13,10 @@
 			"include": "#metadata"
 		},
 		{
-			"include": "#namespace"
+			"include": "#package"
 		},
 		{
-			"include": "#using"
+			"include": "#import"
 		},
 		{
 			"include": "#declarations"
@@ -34,60 +34,63 @@
 					"name": "punctuation.separator.hash.mpd"
 				}
 			},
-			"end": "(?<=$)",
+			"end": "(?=$)",
 			"patterns": [
 				{
-					"begin": "\\b(?:(if)|(elif))\\b",
-					"beginCaptures": {
-						"1": {
-							"name": "keyword.preprocessor.if.mpd"
-						},
-						"2": {
-							"name": "keyword.preprocessor.elif.mpd"
-						}
-					},
-					"end": "(?=$)",
-					"patterns": [
-						{
-							"include": "#preprocessor_expression"
-						}
-					]
+					"include": "#line_comment"
 				},
 				{
-					"match": "\\b(?:(else)|(end))\\b",
-					"captures": {
-						"1": {
-							"name": "keyword.preprocessor.else.mpd"
-						},
-						"2": {
-							"name": "keyword.preprocessor.end.mpd"
-						}
-					}
+					"include": "#block_comment"
 				}
 			]
+		},
+		"block_comment": {
+			"name": "comment.block.mpd",
+			"begin": "\\/\\*",
+			"beginCaptures": {
+				"0": {
+					"name": "punctuation.definition.comment.mpd"
+				}
+			},
+			"end": "\\*\\/",
+			"endCaptures": {
+				"0": {
+					"name": "punctuation.definition.comment.mpd"
+				}
+			}
+		},
+		"line_comment": {
+			"name": "comment.line.double-slash.mpd",
+			"begin": "\\/\\/",
+			"beginCaptures": {
+				"0": {
+					"name": "punctuation.definition.comment.mpd"
+				}
+			},
+			"end": "(?:\\n|$)"
 		},
 		"comment": {
 			"patterns": [
 				{
 					"name": "comment.block.mpd",
-					"begin": "(\\/\\*)",
+					"begin": "\\/\\*",
 					"beginCaptures": {
-						"1": {
+						"0": {
 							"name": "punctuation.definition.comment.mpd"
 						}
 					},
-					"end": "(\\*\\/)",
+					"end": "\\*\\/",
 					"endCaptures": {
-						"1": {
+						"0": {
 							"name": "punctuation.definition.comment.mpd"
 						}
 					}
 				},
 				{
 					"name": "comment.line.double-slash.mpd",
-					"begin": "(\\/\\/)",
+					"begin": "\\/\\/",
 					"beginCaptures": {
-						"1": {
+						"0": {
 							"name": "punctuation.definition.comment.mpd"
 						}
 					},
@@ -96,67 +99,49 @@
 			]
 		},
 		"metadata": {
-			"begin": "(@[_[:alpha:]][_[:alnum:]]*)",
+			"begin": "(@[_[:alpha:]][_[:alnum:]]*)(\\()",
 			"beginCaptures": {
 				"1": {
 					"name": "entity.name.tag.mpd"
+				},
+				"2": {
+					"name": "punctuation.parenthesis.open.mpd"
 				}
 			},
-			"end": "(?:\\n|$)",
+			"end": "\\)",
+			"endCaptures": {
+				"0": {
+					"name": "punctuation.parenthesis.close.mpd"
+				}
+			},
 			"patterns": [
 				{
-					"begin": "\\(",
-					"beginCaptures": {
-						"0": {
-							"name": "punctuation.parenthesis.begin.mpd"
-						}
-					},
-					"end": "\\)",
-					"endCaptures": {
-						"0": {
-							"name": "punctuation.parenthesis.close.mpd"
-						}
-					},
-					"patterns": [
-						{
-							"match": "([_[:alpha:]][_[:alnum:]]*)\\s*(=)",
-							"captures": {
-								"1": {
-									"name": "entity.name.type.mpd"
-								},
-								"2": {
-									"name": "keyword.operator.assignment.mpd"
-								}
-							}
+					"match": "([_[:alpha:]][_[:alnum:]]*)\\s*(=)",
+					"captures": {
+						"1": {
+							"name": "entity.name.type.mpd"
 						},
-						{
-							"include": "#literal"
-						},
-						{
-							"include": "#punctuation_comma"
+						"2": {
+							"name": "keyword.operator.assignment.mpd"
 						}
-					]
+					}
 				},
 				{
-					"patterns": [
-						{
-							"include": "#string"
-						},
-						{
-							"include": "#raw_string"
-						}
-					]
+					"include": "#literal"
+				},
+				{
+					"include": "#punctuation_comma"
 				}
 			]
 		},
-		"namespace": {
-			"begin": "\\b(namespace)\\b\\s*",
+		"package": {
+			"begin": "\\b(package)\\b\\s*",
 			"beginCaptures": {
 				"1": {
 					"name": "keyword.other.namespace.mpd"
 				}
 			},
-			"end": "(?=;)",
+			"end": "(?=$)",
 			"patterns": [
 				{
 					"name": "entity.name.type.namespace.mpd",
@@ -164,21 +149,35 @@
 				},
 				{
 					"include": "#punctuation_accessor"
+				},
+				{
+					"include": "#line_comment"
 				}
 			]
 		},
-		"using": {
-			"begin": "\\b(using)\\b\\s*",
+		"import": {
+			"begin": "\\b(import)\\b\\s*",
 			"beginCaptures": {
 				"1": {
 					"name": "keyword.other.using.mpd"
 				}
 			},
-			"end": "(?=;)",
+			"end": "(?=$)",
 			"patterns": [
+				{
+					"match": "\\bas\\b",
+					"captures": {
+						"0": {
+							"name": "keyword.other.using.mpd"
+						}
+					}
+				},
 				{
 					"name": "entity.name.type.namespace.mpd",
 					"match": "[_[:alpha:]][_[:alnum:]]*"
+				},
+				{
+					"include": "#line_comment"
 				}
 			]
 		},
@@ -259,7 +258,7 @@
 			]
 		},
 		"property": {
-			"begin": "\\b(const|var)\\b\\s+([_[:alpha:]][_[:alnum:]]*)",
+			"begin": "\\b(val|var)\\b\\s+([_[:alpha:]][_[:alnum:]]*)",
 			"beginCaptures": {
 				"1": {
 					"name": "keyword.other.property.mpd"
@@ -431,6 +430,9 @@
 			"patterns": [
 				{
 					"include": "#type_builtin"
+				},
+				{
+					"include": "#type_function"
 				},
 				{
 					"include": "#type_name"
@@ -726,7 +728,7 @@
 			}
 		},
 		"local_declaration": {
-			"begin": "\\b(var|const)\\b\\s+([_[:alpha:]][_[:alnum:]]*)",
+			"begin": "\\b(var|val)\\b\\s+([_[:alpha:]][_[:alnum:]]*)",
 			"beginCaptures": {
 				"1": {
 					"name": "keyword.other.local.mpd"
@@ -932,12 +934,8 @@
 			]
 		},
 		"type_builtin": {
-			"match": "\\b(bool|char|i8|i16|i32|i64|u8|u16|u32|u64|f32|f64|void|pointer)\\b",
-			"captures": {
-				"1": {
-					"name": "keyword.type.mpd"
-				}
-			}
+			"name": "keyword.type.mpd",
+			"match": "\\b(i8|i16|i32|i64|byte|size|f16|f32|f64|bool|void)\\b"
 		},
 		"type_name": {
 			"patterns": [
