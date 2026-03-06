@@ -25,6 +25,27 @@
         "snippets": [{
             "language": "micro-panda",
             "path": "./snippets/micro-panda.json"
+        }],
+        "problemMatchers": [{
+            "name": "mpd",
+            "owner": "micro-panda",
+            "fileLocation": "absolute",
+            "pattern": {
+                "regexp": "^(.+):(\\d+):(\\d+): error: (.+)$",
+                "file": 1,
+                "line": 2,
+                "column": 3,
+                "message": 4
+            }
+        }],
+        "taskDefinitions": [{
+            "type": "mpd",
+            "properties": {
+                "target": {
+                    "type": "string",
+                    "description": "The mpd build target to run"
+                }
+            }
         }]
     }
 }
