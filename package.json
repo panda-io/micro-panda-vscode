@@ -21,6 +21,10 @@
             "language": "micro-panda",
             "scopeName": "source.mpd",
             "path": "./syntaxes/micro-panda.tmLanguage.json"
+        }],
+        "snippets": [{
+            "language": "micro-panda",
+            "path": "./snippets/micro-panda.json"
         }]
     }
 }

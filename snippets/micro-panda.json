@@ -1,0 +1,122 @@
+{
+    "val declaration": {
+        "prefix": "val",
+        "body": ["val ${1:name}: ${2:i32} = ${3:value}"],
+        "description": "Immutable variable declaration"
+    },
+
+    "var declaration": {
+        "prefix": "var",
+        "body": ["var ${1:name}: ${2:i32} = ${3:value}"],
+        "description": "Mutable variable declaration"
+    },
+
+    "function": {
+        "prefix": "fun",
+        "body": [
+            "fun ${1:name}(${2:params}): ${3:void}",
+            "\t${0}"
+        ],
+        "description": "Function declaration"
+    },
+
+    "generic function": {
+        "prefix": "fung",
+        "body": [
+            "fun ${1:name}<${2:T}>(${3:params}): &${2:T}",
+            "\t${0}"
+        ],
+        "description": "Generic function declaration"
+    },
+
+    "class": {
+        "prefix": "class",
+        "body": [
+            "class ${1:Name}(${2:val field: i32})",
+            "\t${0}"
+        ],
+        "description": "Class declaration"
+    },
+
+    "enum": {
+        "prefix": "enum",
+        "body": [
+            "enum ${1:Name}",
+            "\t${2:Member1}",
+            "\t${3:Member2}",
+            "\t${0}"
+        ],
+        "description": "Enum declaration"
+    },
+
+    "if": {
+        "prefix": "if",
+        "body": [
+            "if ${1:condition}",
+            "\t${0}"
+        ],
+        "description": "If statement"
+    },
+
+    "if/else": {
+        "prefix": "ife",
+        "body": [
+            "if ${1:condition}",
+            "\t${2}",
+            "else",
+            "\t${0}"
+        ],
+        "description": "If/else statement"
+    },
+
+    "for range": {
+        "prefix": "for",
+        "body": [
+            "for ${1:i} in range(${2:0}, ${3:n})",
+            "\t${0}"
+        ],
+        "description": "For range loop"
+    },
+
+    "for in": {
+        "prefix": "forin",
+        "body": [
+            "for ${1:item} in ${2:collection}",
+            "\t${0}"
+        ],
+        "description": "For-in loop over a collection"
+    },
+
+    "while": {
+        "prefix": "while",
+        "body": [
+            "while ${1:condition}",
+            "\t${0}"
+        ],
+        "description": "While loop"
+    },
+
+    "match": {
+        "prefix": "match",
+        "body": [
+            "match ${1:value}",
+            "\t${2:Pattern1}",
+            "\t\t${3}",
+            "\t${4:Pattern2}",
+            "\t\t${0}"
+        ],
+        "description": "Match statement"
+    },
+
+    "preprocessor if": {
+        "prefix": "ifall",
+        "body": [
+            "#if ${1:FLAG}",
+            "${2}",
+            "#else",
+            "${3}",
+            "#end"
+        ],
+        "description": "Conditional compilation block"
+    }
+}
