@@ -23,7 +23,7 @@ var uint  := u32(int32)   # signed → unsigned
 ## Integer ↔ Float
 
 ```python
-var f := f32(42)       # integer to float
+var f := float(42)       # integer to float
 var i := i32(3.14)     # float to integer (truncates)
 ```
 

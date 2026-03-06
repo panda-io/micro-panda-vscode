@@ -17,7 +17,7 @@ Annotations appear on their own line immediately before the declaration they app
 Multiple annotations can be stacked:
 
 ```bash
-@extern("assert($condition)")
+@extern("assert({condition})")
 fun assert_true(condition: bool)
 ```
 
@@ -36,7 +36,7 @@ fun tick()
 
 A call `tick()` emits `tick()` in C unchanged.
 
-### C rename — no `$` placeholders
+### C rename — no placeholders
 
 ```bash
 @extern("malloc")
@@ -48,14 +48,14 @@ A call `alloc(64)` emits `malloc(64)`.
 ### Template with named placeholders
 
 ```bash
-@extern("assert($condition)")
+@extern("assert({condition})")
 fun assert_true(condition: bool)
 
-@extern("assert($a == $b)")
+@extern("assert({a} == {b})")
 fun assert_i32_equal(a: i32, b: i32)
 ```
 
-Each `$paramName` in the template is replaced by the corresponding argument expression.
+Each `{paramName}` in the template is replaced by the corresponding argument expression.
 
 | Call | C output |
 | --- | --- |

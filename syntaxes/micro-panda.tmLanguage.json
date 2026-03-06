@@ -182,7 +182,7 @@
 
         "type-builtin": {
             "name": "storage.type.mpd",
-            "match": "\\b(i8|i16|i32|i64|u8|u16|u32|u64|f32|bool|void)\\b"
+            "match": "\\b(i8|i16|i32|i64|u8|u16|u32|u64|float|fixed|bool|void)\\b"
         },
 
         "type-name": {

@@ -13,8 +13,8 @@
 | `u32` | 32-bit unsigned integer |
 | `i64` | 64-bit signed integer |
 | `u64` | 64-bit unsigned integer |
-| `f32` | 32-bit float |
-| `fixed` | 16.16 fixed-point number |
+| `float` | 32-bit float |
+| `fixed` | 16.16 fixed-point (i32 storage, 16 integer + 16 fractional bits) |
 | `void` | No value / absent return type |
 
 > **Strings** — there is no dedicated string type. Strings are treated as `u8` arrays.
@@ -53,4 +53,4 @@ const nanosecond = 0.000_000_001
 When no type is specified:
 
 - Integer literals default to `i32`
-- Float literals default to `f32`
+- Float literals default to `float`
