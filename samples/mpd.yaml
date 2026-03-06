@@ -1,0 +1,12 @@
+name: sample
+version: 0.1.0
+
+src: .
+out: out/
+
+targets:
+  main:
+    entry: sample
+    cc: gcc
+    cflags: [-O0]
+    output: bin/sample

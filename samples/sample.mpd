@@ -1,0 +1,9 @@
+fun main() i32
+    val sample := Sample(10)
+    val result := sample.add(5, 7)
+    return 0
+
+class Sample(val field: i32)
+    
+    fun add(a: i32, b: i32) i32
+        return a + b

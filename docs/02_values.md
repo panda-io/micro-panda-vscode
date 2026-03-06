@@ -13,8 +13,7 @@
 | `u32` | 32-bit unsigned integer |
 | `i64` | 64-bit signed integer |
 | `u64` | 64-bit unsigned integer |
-| `f32` | 32-bit float (default float) |
-| `f64` | 64-bit float |
+| `f32` | 32-bit float |
 | `fixed` | 16.16 fixed-point number |
 | `void` | No value / absent return type |
 

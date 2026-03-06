@@ -20,14 +20,6 @@ var int16 := i16(int32)   # narrow to 16-bit (truncates)
 var uint  := u32(int32)   # signed → unsigned
 ```
 
-## Float Casting
-
-```python
-var float32: f32 = 1.0
-
-var float64 := f64(float32)   # widen to 64-bit
-```
-
 ## Integer ↔ Float
 
 ```python
