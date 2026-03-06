@@ -1,1164 +1,235 @@
 {
-	"$schema": "https://raw.githubusercontent.com/panda-io/micro-panda-vscode/refs/heads/master/syntaxes/micro-panda.tmLanguage.json",
-	"name": "mirco panda language syntax",
-	"scopeName": "source.mpd",
-	"patterns": [
-		{
-			"include": "#preprocessor"
-		},
-		{
-			"include": "#comment"
-		},
-		{
-			"include": "#metadata"
-		},
-		{
-			"include": "#package"
-		},
-		{
-			"include": "#import"
-		},
-		{
-			"include": "#declarations"
-		},
-		{
-			"include": "#expression"
-		}
-	],
-	"repository": {
-		"preprocessor": {
-			"name": "meta.preprocessor.mpd",
-			"begin": "^\\s*(\\#)\\s*",
-			"beginCaptures": {
-				"1": {
-					"name": "punctuation.separator.hash.mpd"
-				}
-			},
-			"end": "(?=$)",
-			"patterns": [
-				{
-					"include": "#line_comment"
-				},
-				{
-					"include": "#block_comment"
-				}
-			]
-		},
-		"block_comment": {
-			"name": "comment.block.mpd",
-			"begin": "\\/\\*",
-			"beginCaptures": {
-				"0": {
-					"name": "punctuation.definition.comment.mpd"
-				}
-			},
-			"end": "\\*\\/",
-			"endCaptures": {
-				"0": {
-					"name": "punctuation.definition.comment.mpd"
-				}
-			}
-		},
-		"line_comment": {
-			"name": "comment.line.double-slash.mpd",
-			"begin": "\\/\\/",
-			"beginCaptures": {
-				"0": {
-					"name": "punctuation.definition.comment.mpd"
-				}
-			},
-			"end": "(?:\\n|$)"
-		},
-		"comment": {
-			"patterns": [
-				{
-					"name": "comment.block.mpd",
-					"begin": "\\/\\*",
-					"beginCaptures": {
-						"0": {
-							"name": "punctuation.definition.comment.mpd"
-						}
-					},
-					"end": "\\*\\/",
-					"endCaptures": {
-						"0": {
-							"name": "punctuation.definition.comment.mpd"
-						}
-					}
-				},
-				{
-					"name": "comment.line.double-slash.mpd",
-					"begin": "\\/\\/",
-					"beginCaptures": {
-						"0": {
-							"name": "punctuation.definition.comment.mpd"
-						}
-					},
-					"end": "(?:\\n|$)"
-				}
-			]
-		},
-		"metadata": {
-			"begin": "(@[_[:alpha:]][_[:alnum:]]*)(\\()",
-			"beginCaptures": {
-				"1": {
-					"name": "entity.name.tag.mpd"
-				},
-				"2": {
-					"name": "punctuation.parenthesis.open.mpd"
-				}
-			},
-			"end": "\\)",
-			"endCaptures": {
-				"0": {
-					"name": "punctuation.parenthesis.close.mpd"
-				}
-			},
-			"patterns": [
-				{
-					"match": "([_[:alpha:]][_[:alnum:]]*)\\s*(=)",
-					"captures": {
-						"1": {
-							"name": "entity.name.type.mpd"
-						},
-						"2": {
-							"name": "keyword.operator.assignment.mpd"
-						}
-					}
-				},
-				{
-					"include": "#literal"
-				},
-				{
-					"include": "#punctuation_comma"
-				}
-			]
-		},
-		"package": {
-			"begin": "\\b(package)\\b\\s*",
-			"beginCaptures": {
-				"1": {
-					"name": "keyword.other.namespace.mpd"
-				}
-			},
-			"end": "(?=$)",
-			"patterns": [
-				{
-					"name": "entity.name.type.namespace.mpd",
-					"match": "[_[:alpha:]][_[:alnum:]]*"
-				},
-				{
-					"include": "#punctuation_accessor"
-				},
-				{
-					"include": "#line_comment"
-				}
-			]
-		},
-		"import": {
-			"begin": "\\b(import)\\b\\s*",
-			"beginCaptures": {
-				"1": {
-					"name": "keyword.other.using.mpd"
-				}
-			},
-			"end": "(?=$)",
-			"patterns": [
-				{
-					"match": "\\bas\\b",
-					"captures": {
-						"0": {
-							"name": "keyword.other.using.mpd"
-						}
-					}
-				},
-				{
-					"name": "entity.name.type.namespace.mpd",
-					"match": "[_[:alpha:]][_[:alnum:]]*"
-				},
-				{
-					"include": "#line_comment"
-				}
-			]
-		},
-		"declarations": {
-			"patterns": [
-				{
-					"include": "#storage_modifier"
-				},
-				{
-					"include": "#enum"
-				},
-				{
-					"include": "#property"
-				},
-				{
-					"include": "#method"
-				},
-				{
-					"include": "#struct"
-				}
-			]
-		},
-		"storage_modifier": {
-			"name": "storage.modifier.mpd",
-			"match": "\\b(private|internal|public)\\b"
-		},
-		"enum": {
-			"begin": "\\b(enum)\\b\\s+([_[:alpha:]][_[:alnum:]]*)",
-			"beginCaptures": {
-				"1": {
-					"name": "keyword.other.enum.mpd"
-				},
-				"2": {
-					"name": "entity.name.type.enum.mpd"
-				}
-			},
-			"end": "(?<=\\})",
-			"patterns": [
-				{
-					"begin": "\\{",
-					"beginCaptures": {
-						"0": {
-							"name": "punctuation.curlybrace.open.mpd"
-						}
-					},
-					"end": "\\}",
-					"endCaptures": {
-						"0": {
-							"name": "punctuation.curlybrace.close.mpd"
-						}
-					},
-					"patterns": [
-						{
-							"include": "#preprocessor"
-						},
-						{
-							"include": "#comment"
-						},
-						{
-							"include": "#punctuation_comma"
-						},
-						{
-							"begin": "[_[:alpha:]][_[:alnum:]]*",
-							"beginCaptures": {
-								"0": {
-									"name": "entity.name.variable.enum_member.mpd"
-								}
-							},
-							"end": "(?=(,|\\}))",
-							"patterns": [
-								{
-									"include": "#variable_initializer"
-								}
-							]
-						}
-					]
-				}
-			]
-		},
-		"property": {
-			"begin": "\\b(val|var)\\b\\s+([_[:alpha:]][_[:alnum:]]*)",
-			"beginCaptures": {
-				"1": {
-					"name": "keyword.other.property.mpd"
-				},
-				"2": {
-					"name": "entity.name.variable.mpd"
-				}
-			},
-			"end": "(?=;)",
-			"patterns": [
-				{
-					"include": "#type"
-				},
-				{
-					"include": "#variable_initializer"
-				}
-			]
-		},
-		"method": {
-			"begin": "(\\binline\\b\\s+)?(\\bfunction\\b)\\s+([_~[:alpha:]][_[:alnum:]]*)",
-			"beginCaptures": {
-				"1": {
-					"name": "keyword.other.inline.mpd"
-				},
-				"2": {
-					"name": "keyword.other.function.mpd"
-				},
-				"3": {
-					"name": "entity.name.function.mpd"
-				}
-			},
-			"end": "(?<=\\})|(?=;)",
-			"patterns": [
-				{
-					"include": "#parenthesized_parameter_list"
-				},
-				{
-					"include": "#type"
-				},
-				{
-					"include": "#block"
-				}
-			]
-		},
-		"struct": {
-			"begin": "(?=\\bstruct\\b)",
-			"end": "(?<=\\})",
-			"patterns": [
-				{
-					"begin": "\\b(struct)\\b\\s+([_[:alpha:]][_[:alnum:]]*)\\s*",
-					"beginCaptures": {
-						"1": {
-							"name": "keyword.other.struct.mpd"
-						},
-						"2": {
-							"name": "entity.name.type.struct.mpd"
-						}
-					},
-					"end": "(?=\\{)",
-					"patterns": [
-						{
-							"include": "#comment"
-						},
-						{
-							"include": "#base_types"
-						}
-					]
-				},
-				{
-					"begin": "\\{",
-					"beginCaptures": {
-						"0": {
-							"name": "punctuation.curlybrace.open.mpd"
-						}
-					},
-					"end": "\\}",
-					"endCaptures": {
-						"0": {
-							"name": "punctuation.curlybrace.close.mpd"
-						}
-					},
-					"patterns": [
-						{
-							"include": "#preprocessor"
-						},
-						{
-							"include": "#comment"
-						},
-						{
-							"include": "#metadata"
-						},
-						{
-							"include": "#storage_modifier"
-						},
-						{
-							"include": "#property"
-						},
-						{
-							"include": "#method"
-						},
-						{
-							"include": "#punctuation_semicolon"
-						}
-					]
-				},
-				{
-					"include": "#preprocessor"
-				},
-				{
-					"include": "#comment"
-				}
-			]
-		},
-		"base_types": {
-			"begin": ":",
-			"beginCaptures": {
-				"0": {
-					"name": "punctuation.separator.colon.mpd"
-				}
-			},
-			"end": "(?=\\{)",
-			"patterns": [
-				{
-					"include": "#type"
-				},
-				{
-					"include": "#punctuation_comma"
-				}
-			]
-		},
-		"parenthesized_parameter_list": {
-			"begin": "(\\()",
-			"beginCaptures": {
-				"0": {
-					"name": "punctuation.parenthesis.open.mpd"
-				}
-			},
-			"end": "(\\))",
-			"endCaptures": {
-				"0": {
-					"name": "punctuation.parenthesis.close.mpd"
-				}
-			},
-			"patterns": [
-				{
-					"include": "#parameter"
-				},
-				{
-					"include": "#punctuation_comma"
-				}
-			]
-		},
-		"variable_initializer": {
-			"begin": "(?<!=|!)(=)(?!=|>)",
-			"beginCaptures": {
-				"1": {
-					"name": "keyword.operator.assignment.mpd"
-				}
-			},
-			"end": "(?=[,\\)\\];])",
-			"patterns": [
-				{
-					"include": "#expression"
-				}
-			]
-		},
-		"type": {
-			"name": "meta.type.mpd",
-			"patterns": [
-				{
-					"include": "#type_builtin"
-				},
-				{
-					"include": "#type_function"
-				},
-				{
-					"include": "#type_name"
-				}
-			]
-		},
-		"parameter": {
-			"begin": "(\\bref\\b\\s+)?([_[:alpha:]][_[:alnum:]]*)",
-			"beginCaptures": {
-				"1": {
-					"name": "keyword.other.ref.mpd"
-				},
-				"2": {
-					"name": "entity.name.variable.parameter.mpd"
-				}
-			},
-			"end": "(?=,)|(?=\\))",
-			"patterns": [
-				{
-					"include": "#type"
-				},
-				{
-					"include": "#variable_initializer"
-				}
-			]
-		},
-		"block": {
-			"begin": "\\{",
-			"beginCaptures": {
-				"0": {
-					"name": "punctuation.curlybrace.open.mpd"
-				}
-			},
-			"end": "\\}",
-			"endCaptures": {
-				"0": {
-					"name": "punctuation.curlybrace.close.mpd"
-				}
-			},
-			"patterns": [
-				{
-					"include": "#statement"
-				}
-			]
-		},
-		"statement": {
-			"patterns": [
-				{
-					"include": "#preprocessor"
-				},
-				{
-					"include": "#comment"
-				},
-				{
-					"include": "#for_statement"
-				},
-				{
-					"include": "#if_statement"
-				},
-				{
-					"include": "#else_part"
-				},
-				{
-					"include": "#switch_statement"
-				},
-				{
-					"include": "#return_statement"
-				},
-				{
-					"include": "#break_or_continue_statement"
-				},
-				{
-					"include": "#raw_statement"
-				},
-				{
-					"include": "#throw_statement"
-				},
-				{
-					"include": "#yield_statement"
-				},
-				{
-					"include": "#await_statement"
-				},
-				{
-					"include": "#try_statement"
-				},
-				{
-					"include": "#local_declaration"
-				},
-				{
-					"include": "#punctuation_semicolon"
-				},
-				{
-					"include": "#block"
-				},
-				{
-					"include": "#expression"
-				}
-			]
-		},
-		"for_statement": {
-			"begin": "(?<!\\.)\\b(for)\\b\\s*(?=\\()",
-			"beginCaptures": {
-				"1": {
-					"name": "keyword.control.loop.for.mpd"
-				}
-			},
-			"end": "(?<=\\})|(?=;)",
-			"patterns": [
-				{
-					"begin": "\\(",
-					"beginCaptures": {
-						"0": {
-							"name": "punctuation.parenthesis.open.mpd"
-						}
-					},
-					"end": "\\)",
-					"endCaptures": {
-						"0": {
-							"name": "punctuation.parenthesis.close.mpd"
-						}
-					},
-					"patterns": [
-						{
-							"include": "#local_declaration"
-						},
-						{
-							"include": "#expression"
-						},
-						{
-							"include": "#punctuation_semicolon"
-						}
-					]
-				},
-				{
-					"include": "#statement"
-				}
-			]
-		},
-		"if_statement": {
-			"begin": "(?<!\\.)\\b(if)\\b\\s*(?=\\()",
-			"beginCaptures": {
-				"1": {
-					"name": "keyword.control.conditional.if.mpd"
-				}
-			},
-			"end": "(?<=\\})|(?=;)",
-			"patterns": [
-				{
-					"begin": "\\(",
-					"beginCaptures": {
-						"0": {
-							"name": "punctuation.parenthesis.open.mpd"
-						}
-					},
-					"end": "\\)",
-					"endCaptures": {
-						"0": {
-							"name": "punctuation.parenthesis.close.mpd"
-						}
-					},
-					"patterns": [
-						{
-							"include": "#expression"
-						}
-					]
-				},
-				{
-					"include": "#statement"
-				}
-			]
-		},
-		"else_part": {
-			"begin": "(?<!\\.)\\b(else)\\b",
-			"beginCaptures": {
-				"1": {
-					"name": "keyword.control.conditional.else.mpd"
-				}
-			},
-			"end": "(?<=\\})|(?=;)",
-			"patterns": [
-				{
-					"include": "#statement"
-				}
-			]
-		},
-		"switch_statement": {
-			"begin": "(?<!\\.)\\b(switch)\\b\\s*(?=\\()",
-			"beginCaptures": {
-				"1": {
-					"name": "keyword.control.switch.mpd"
-				}
-			},
-			"end": "(?<=\\})",
-			"patterns": [
-				{
-					"begin": "\\(",
-					"beginCaptures": {
-						"0": {
-							"name": "punctuation.parenthesis.open.mpd"
-						}
-					},
-					"end": "\\)",
-					"endCaptures": {
-						"0": {
-							"name": "punctuation.parenthesis.close.mpd"
-						}
-					},
-					"patterns": [
-						{
-							"include": "#expression"
-						}
-					]
-				},
-				{
-					"begin": "\\{",
-					"beginCaptures": {
-						"0": {
-							"name": "punctuation.curlybrace.open.mpd"
-						}
-					},
-					"end": "\\}",
-					"endCaptures": {
-						"0": {
-							"name": "punctuation.curlybrace.close.mpd"
-						}
-					},
-					"patterns": [
-						{
-							"patterns": [
-								{
-									"begin": "(?<!\\.)\\b(case)\\b\\s+",
-									"beginCaptures": {
-										"1": {
-											"name": "keyword.control.case.mpd"
-										}
-									},
-									"end": ":",
-									"endCaptures": {
-										"0": {
-											"name": "punctuation.separator.colon.mpd"
-										}
-									},
-									"patterns": [
-										{
-											"include": "#expression"
-										}
-									]
-								},
-								{
-									"match": "(?<!\\.)\\b(default)\\b\\s*(:)",
-									"captures": {
-										"1": {
-											"name": "keyword.control.default.mpd"
-										},
-										"2": {
-											"name": "punctuation.separator.colon.mpd"
-										}
-									}
-								}
-							]
-						},
-						{
-							"include": "#statement"
-						}
-					]
-				}
-			]
-		},
-		"return_statement": {
-			"begin": "(?<!\\.)\\b(return)\\b",
-			"beginCaptures": {
-				"1": {
-					"name": "keyword.control.flow.return.mpd"
-				}
-			},
-			"end": "(?=;)",
-			"patterns": [
-				{
-					"include": "#expression"
-				}
-			]
-		},
-		"break_or_continue_statement": {
-			"match": "(?<!\\.)\\b(?:(break)|(continue))\\b",
-			"captures": {
-				"1": {
-					"name": "keyword.control.flow.break.mpd"
-				},
-				"2": {
-					"name": "keyword.control.flow.continue.mpd"
-				}
-			}
-		},
-		"local_declaration": {
-			"begin": "\\b(var|val)\\b\\s+([_[:alpha:]][_[:alnum:]]*)",
-			"beginCaptures": {
-				"1": {
-					"name": "keyword.other.local.mpd"
-				},
-				"2": {
-					"name": "entity.name.variable.local.mpd"
-				}
-			},
-			"end": "(?=;|\\)|\\:)",
-			"patterns": [
-				{
-					"include": "#type"
-				},
-				{
-					"include": "#variable_initializer"
-				}
-			]
-		},
-		"expression": {
-			"patterns": [
-				{
-					"include": "#preprocessor"
-				},
-				{
-					"include": "#this_expression"
-				},
-				{
-					"include": "#conditional_operator"
-				},
-				{
-					"include": "#expression_operators"
-				},
-				{
-					"include": "#invocation_expression"
-				},
-				{
-					"include": "#member_access_expression"
-				},
-				{
-					"include": "#element_access_expression"
-				},
-				{
-					"include": "#literal"
-				},
-				{
-					"include": "#parenthesized_expression"
-				},
-				{
-					"include": "#identifier"
-				}
-			]
-		},
-		"this_expression": {
-			"match": "\\b(?:(this))\\b",
-			"captures": {
-				"1": {
-					"name": "keyword.other.this.mpd"
-				}
-			}
-		},
-		"expression_operators": {
-			"patterns": [
-				{
-					"name": "keyword.operator.assignment.compound.mpd",
-					"match": "\\*=|/=|%=|\\+=|-="
-				},
-				{
-					"name": "keyword.operator.assignment.compound.bitwise.mpd",
-					"match": "\\&=|\\^=|<<=|>>=|\\|="
-				},
-				{
-					"name": "keyword.operator.bitwise.shift.mpd",
-					"match": "<<|>>"
-				},
-				{
-					"name": "keyword.operator.comparison.mpd",
-					"match": "==|!="
-				},
-				{
-					"name": "keyword.operator.relational.mpd",
-					"match": "<=|>=|<|>"
-				},
-				{
-					"name": "keyword.operator.logical.mpd",
-					"match": "\\!|&&|\\|\\|"
-				},
-				{
-					"name": "keyword.operator.bitwise.mpd",
-					"match": "\\&|~|\\^|\\|"
-				},
-				{
-					"name": "keyword.operator.assignment.mpd",
-					"match": "\\="
-				},
-				{
-					"name": "keyword.operator.decrement.mpd",
-					"match": "--"
-				},
-				{
-					"name": "keyword.operator.increment.mpd",
-					"match": "\\+\\+"
-				},
-				{
-					"name": "keyword.operator.arithmetic.mpd",
-					"match": "%|\\*|/|-|\\+"
-				}
-			]
-		},
-		"invocation_expression": {
-			"begin": "(?:(\\.)\\s*)?([_[:alpha:]][_[:alnum:]]*)\\s*(?=\\()",
-			"beginCaptures": {
-				"1": {
-					"name": "punctuation.accessor.mpd"
-				},
-				"2": {
-					"name": "entity.name.function.mpd"
-				}
-			},
-			"end": "(?<=\\))",
-			"patterns": [
-				{
-					"include": "#argument_list"
-				}
-			]
-		},
-		"member_access_expression": {
-			"patterns": [
-				{
-					"match": "([_[:alpha:]][_[:alnum:]]*)(?=\\.[_[:alpha:]][_[:alnum:]]*)",
-					"captures": {
-						"1": {
-							"name": "variable.other.object.mpd"
-						}
-					}
-				},
-				{
-					"match": "([_[:alpha:]][_[:alnum:]]*)(?=\\.[_[:alpha:]][_[:alnum:]]*)",
-					"captures": {
-						"1": {
-							"name": "variable.other.object.mpd"
-						}
-					}
-				}
-			]
-		},
-		"element_access_expression": {
-			"begin": "([_[:alpha:]][_[:alnum:]]*)(?=\\[)",
-			"beginCaptures": {
-				"1": {
-					"name": "variable.other.object.property.mpd"
-				}
-			},
-			"end": "(?<=\\])(?!\\s*\\[)",
-			"patterns": [
-				{
-					"include": "#expression"
-				}
-			]
-		},
-		"parenthesized_expression": {
-			"begin": "\\(",
-			"beginCaptures": {
-				"0": {
-					"name": "punctuation.parenthesis.open.mpd"
-				}
-			},
-			"end": "\\)",
-			"endCaptures": {
-				"0": {
-					"name": "punctuation.parenthesis.close.mpd"
-				}
-			},
-			"patterns": [
-				{
-					"include": "#expression"
-				}
-			]
-		},
-		"identifier": {
-			"name": "variable.other.readwrite.mpd",
-			"match": "[_[:alpha:]][_[:alnum:]]*"
-		},
-		"argument_list": {
-			"begin": "\\(",
-			"beginCaptures": {
-				"0": {
-					"name": "punctuation.parenthesis.open.mpd"
-				}
-			},
-			"end": "\\)",
-			"endCaptures": {
-				"0": {
-					"name": "punctuation.parenthesis.close.mpd"
-				}
-			},
-			"patterns": [
-				{
-					"include": "#expression"
-				},
-				{
-					"include": "#punctuation_comma"
-				}
-			]
-		},
-		"type_builtin": {
-			"name": "keyword.type.mpd",
-			"match": "\\b(i8|i16|i32|i64|byte|size|f16|f32|f64|bool|void)\\b"
-		},
-		"type_name": {
-			"patterns": [
-				{
-					"match": "([_[:alpha:]][_[:alnum:]]*)\\s*(\\.)",
-					"captures": {
-						"1": {
-							"name": "entity.name.type.mpd"
-						},
-						"2": {
-							"name": "punctuation.accessor.mpd"
-						}
-					}
-				},
-				{
-					"match": "(\\.)\\s*([_[:alpha:]][_[:alnum:]]*)",
-					"captures": {
-						"1": {
-							"name": "punctuation.accessor.mpd"
-						},
-						"2": {
-							"name": "entity.name.type.mpd"
-						}
-					}
-				},
-				{
-					"name": "entity.name.type.mpd",
-					"match": "[_[:alpha:]][_[:alnum:]]*"
-				}
-			]
-		},
-		"literal": {
-			"patterns": [
-				{
-					"include": "#boolean"
-				},
-				{
-					"include": "#null"
-				},
-				{
-					"include": "#numeric"
-				},
-				{
-					"include": "#char"
-				},
-				{
-					"include": "#string"
-				},
-				{
-					"include": "#raw_string"
-				}
-			]
-		},
-		"boolean": {
-			"patterns": [
-				{
-					"name": "constant.language.boolean.true.mpd",
-					"match": "\\btrue\\b"
-				},
-				{
-					"name": "constant.language.boolean.false.mpd",
-					"match": "\\bfalse\\b"
-				}
-			]
-		},
-		"null": {
-			"name": "constant.language.null.mpd",
-			"match": "\\bnull\\b"
-		},
-		"numeric": {
-			"patterns": [
-				{
-					"name": "constant.numeric.hex.mpd",
-					"match": "\\b0(x|X)[0-9a-fA-F_]+\\b"
-				},
-				{
-					"name": "constant.numeric.binary.mpd",
-					"match": "\\b0(b|B)[01_]+\\b"
-				},
-				{
-					"name": "constant.numeric.decimal.mpd",
-					"match": "\\b([0-9_]+)?\\.[0-9_]+\\b"
-				},
-				{
-					"name": "constant.numeric.decimal.mpd",
-					"match": "\\b[0-9_]+\\b"
-				}
-			]
-		},
-		"char": {
-			"name": "string.quoted.single.mpd",
-			"begin": "'",
-			"beginCaptures": {
-				"0": {
-					"name": "punctuation.definition.char.begin.mpd"
-				}
-			},
-			"end": "(\\')|((?:[^\\\\\\n])$)",
-			"endCaptures": {
-				"1": {
-					"name": "punctuation.definition.char.end.mpd"
-				},
-				"2": {
-					"name": "invalid.illegal.newline.mpd"
-				}
-			},
-			"patterns": [
-				{
-					"include": "#char_character_escape"
-				}
-			]
-		},
-		"char_character_escape": {
-			"name": "constant.character.escape.mpd",
-			"match": "\\\\(['\"\\\\0abfnrtv]|x[0-9a-fA-F]{1,4}|u[0-9a-fA-F]{4})"
-		},
-		"string": {
-			"name": "string.quoted.double.mpd",
-			"begin": "\"",
-			"beginCaptures": {
-				"0": {
-					"name": "punctuation.definition.string.begin.mpd"
-				}
-			},
-			"end": "(\")|((?:[^\\\\\\n])$)",
-			"endCaptures": {
-				"1": {
-					"name": "punctuation.definition.string.end.mpd"
-				},
-				"2": {
-					"name": "invalid.illegal.newline.mpd"
-				}
-			},
-			"patterns": [
-				{
-					"include": "#string_character_escape"
-				}
-			]
-		},
-		"raw_string":{
-			"name": "string.quoted.other.raw.mpd",
-			"begin": "`",
-			"beginCaptures": {
-				"0": {
-					"name": "punctuation.definition.string.begin.mpd"
-				}
-			},
-			"end": "`",
-			"endCaptures": {
-				"0": {
-					"name": "punctuation.definition.string.end.mpd"
-				}
-			}
-		},
-		"string_character_escape": {
-			"name": "constant.character.escape.mpd",
-			"match": "\\\\(['\"\\\\0abfnrtv]|x[0-9a-fA-F]{1,4}|U[0-9a-fA-F]{8}|u[0-9a-fA-F]{4})"
-		},
-		"operator_assignment": {
-			"name": "keyword.operator.assignment.mpd",
-			"match": "(?<!=|!)(=)(?!=)"
-		},
-		"punctuation_comma": {
-			"name": "punctuation.separator.comma.mpd",
-			"match": ","
-		},
-		"punctuation_colon": {
-			"name": "punctuation.separator.colon.mpd",
-			"match": ":"
-		},
-		"punctuation_semicolon": {
-			"name": "punctuation.terminator.statement.mpd",
-			"match": ";"
-		},
-		"punctuation_accessor": {
-			"name": "punctuation.accessor.mpd",
-			"match": "\\."
-		},
-		"punctuation_ellipsis": {
-			"name": "punctuation.accessor.mpd",
-			"match": "\\.\\.\\."
-		},
-		"preprocessor_expression": {
-			"patterns": [
-				{
-					"begin": "\\(",
-					"beginCaptures": {
-						"0": {
-							"name": "punctuation.parenthesis.open.mpd"
-						}
-					},
-					"end": "\\)",
-					"endCaptures": {
-						"0": {
-							"name": "punctuation.parenthesis.close.mpd"
-						}
-					},
-					"patterns": [
-						{
-							"include": "#preprocessor_expression"
-						}
-					]
-				},
-				{
-					"match": "\\b([_[:alpha:]][_[:alnum:]]*)\\b",
-					"captures": {
-						"1": {
-							"name": "entity.name.variable.preprocessor.symbol.mpd"
-						}
-					}
-				},
-				{
-					"match": "(==|!=)|(\\!|&&|\\|\\|)",
-					"captures": {
-						"1": {
-							"name": "keyword.operator.comparison.mpd"
-						},
-						"2": {
-							"name": "keyword.operator.logical.mpd"
-						}
-					}
-				}
-			]
-		}
-	}
+    "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+    "name": "Micro Panda",
+    "scopeName": "source.mpd",
+    "fileTypes": ["mpd"],
+    "patterns": [
+        { "include": "#comment" },
+        { "include": "#preprocessor" },
+        { "include": "#annotation" },
+        { "include": "#string" },
+        { "include": "#char" },
+        { "include": "#number" },
+        { "include": "#function-decl" },
+        { "include": "#class-decl" },
+        { "include": "#enum-decl" },
+        { "include": "#keyword-control" },
+        { "include": "#keyword-declaration" },
+        { "include": "#constant" },
+        { "include": "#type-builtin" },
+        { "include": "#type-name" },
+        { "include": "#operator" }
+    ],
+    "repository": {
+
+        "comment": {
+            "patterns": [
+                {
+                    "name": "comment.line.double-slash.mpd",
+                    "match": "//.*$"
+                },
+                {
+                    "name": "comment.block.mpd",
+                    "begin": "/\\*",
+                    "end": "\\*/",
+                    "beginCaptures": { "0": { "name": "punctuation.definition.comment.begin.mpd" } },
+                    "endCaptures":   { "0": { "name": "punctuation.definition.comment.end.mpd" } }
+                }
+            ]
+        },
+
+        "preprocessor": {
+            "patterns": [
+                {
+                    "comment": "#if / #elif <condition>",
+                    "name": "meta.preprocessor.mpd",
+                    "match": "^(#(?:if|elif))\\s+(.+)$",
+                    "captures": {
+                        "1": { "name": "keyword.control.preprocessor.mpd" },
+                        "2": { "name": "meta.preprocessor.expression.mpd" }
+                    }
+                },
+                {
+                    "comment": "#else and #end",
+                    "name": "keyword.control.preprocessor.mpd",
+                    "match": "^#(?:else|end)\\b"
+                }
+            ]
+        },
+
+        "annotation": {
+            "patterns": [
+                {
+                    "comment": "@name(\"string\") — annotation with argument",
+                    "name": "meta.annotation.mpd",
+                    "begin": "(@)([a-zA-Z_]\\w*)(\\()",
+                    "end": "(\\))",
+                    "beginCaptures": {
+                        "1": { "name": "punctuation.definition.annotation.mpd" },
+                        "2": { "name": "entity.other.attribute-name.mpd" },
+                        "3": { "name": "punctuation.definition.annotation.mpd" }
+                    },
+                    "endCaptures": {
+                        "1": { "name": "punctuation.definition.annotation.mpd" }
+                    },
+                    "patterns": [ { "include": "#string" } ]
+                },
+                {
+                    "comment": "@name — bare annotation",
+                    "match": "(@)([a-zA-Z_]\\w*)",
+                    "captures": {
+                        "1": { "name": "punctuation.definition.annotation.mpd" },
+                        "2": { "name": "entity.other.attribute-name.mpd" }
+                    }
+                }
+            ]
+        },
+
+        "string": {
+            "name": "string.quoted.double.mpd",
+            "begin": "\"",
+            "end": "\"",
+            "patterns": [
+                {
+                    "name": "constant.character.escape.mpd",
+                    "match": "\\\\[nrt\\\\\"'0]"
+                }
+            ]
+        },
+
+        "char": {
+            "name": "string.quoted.single.mpd",
+            "match": "'(?:[^'\\\\]|\\\\[nrt\\\\\"'0])'"
+        },
+
+        "number": {
+            "patterns": [
+                {
+                    "name": "constant.numeric.hex.mpd",
+                    "match": "\\b0[xX][0-9a-fA-F_]+"
+                },
+                {
+                    "name": "constant.numeric.binary.mpd",
+                    "match": "\\b0[bB][01_]+"
+                },
+                {
+                    "name": "constant.numeric.float.mpd",
+                    "match": "\\b[0-9][0-9_]*\\.[0-9][0-9_]*(?:[eE][+-]?[0-9]+)?\\b"
+                },
+                {
+                    "name": "constant.numeric.integer.mpd",
+                    "match": "\\b[0-9][0-9_]*\\b"
+                }
+            ]
+        },
+
+        "function-decl": {
+            "comment": "fun name<T>(...) — highlight name and optional generic param",
+            "match": "\\b(fun)\\s+([a-zA-Z_][a-zA-Z0-9_]*)(?:<([A-Z][a-zA-Z0-9_]*)>)?",
+            "captures": {
+                "1": { "name": "keyword.declaration.function.mpd" },
+                "2": { "name": "entity.name.function.mpd" },
+                "3": { "name": "entity.name.type.parameter.mpd" }
+            }
+        },
+
+        "class-decl": {
+            "match": "\\b(class)\\s+([A-Z][a-zA-Z0-9_]*)",
+            "captures": {
+                "1": { "name": "keyword.declaration.class.mpd" },
+                "2": { "name": "entity.name.class.mpd" }
+            }
+        },
+
+        "enum-decl": {
+            "match": "\\b(enum)\\s+([A-Z][a-zA-Z0-9_]*)",
+            "captures": {
+                "1": { "name": "keyword.declaration.enum.mpd" },
+                "2": { "name": "entity.name.type.enum.mpd" }
+            }
+        },
+
+        "keyword-control": {
+            "name": "keyword.control.mpd",
+            "match": "\\b(if|else|for|while|return|break|continue|match|in|range)\\b"
+        },
+
+        "keyword-declaration": {
+            "name": "keyword.declaration.mpd",
+            "match": "\\b(val|var|const|import|as)\\b"
+        },
+
+        "constant": {
+            "patterns": [
+                {
+                    "name": "constant.language.null.mpd",
+                    "match": "\\bnull\\b"
+                },
+                {
+                    "name": "constant.language.boolean.mpd",
+                    "match": "\\b(true|false)\\b"
+                },
+                {
+                    "name": "variable.language.this.mpd",
+                    "match": "\\bthis\\b"
+                },
+                {
+                    "name": "keyword.operator.word.mpd",
+                    "match": "\\bsizeof\\b"
+                }
+            ]
+        },
+
+        "type-builtin": {
+            "name": "storage.type.mpd",
+            "match": "\\b(i8|i16|i32|i64|u8|u16|u32|u64|f32|f64|bool|void)\\b"
+        },
+
+        "type-name": {
+            "comment": "PascalCase identifiers treated as type/class names",
+            "name": "entity.name.type.mpd",
+            "match": "\\b[A-Z][a-zA-Z0-9_]*\\b"
+        },
+
+        "operator": {
+            "patterns": [
+                {
+                    "name": "keyword.operator.assignment.mpd",
+                    "match": ":=|\\+=|-=|\\*=|/=|%=|\\^=|&=|\\|=|<<=|>>=|="
+                },
+                {
+                    "name": "keyword.operator.comparison.mpd",
+                    "match": "==|!=|<=|>=|<|>"
+                },
+                {
+                    "name": "keyword.operator.logical.mpd",
+                    "match": "&&|\\|\\||!"
+                },
+                {
+                    "name": "keyword.operator.bitwise.mpd",
+                    "match": "<<|>>|\\^|~"
+                },
+                {
+                    "name": "keyword.operator.arithmetic.mpd",
+                    "match": "\\+\\+|--|\\+|-|\\*|/|%"
+                },
+                {
+                    "name": "keyword.operator.reference.mpd",
+                    "match": "&"
+                },
+                {
+                    "name": "punctuation.accessor.mpd",
+                    "match": "::|\\."
+                },
+                {
+                    "name": "punctuation.separator.colon.mpd",
+                    "match": ":"
+                },
+                {
+                    "name": "punctuation.separator.comma.mpd",
+                    "match": ","
+                }
+            ]
+        }
+    }
 }

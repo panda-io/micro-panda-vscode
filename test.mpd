@@ -1,9 +1,0 @@
-namespace;
-
-struct abc 
-{
-    function abc(id u8)
-    {
-
-    }    
-}

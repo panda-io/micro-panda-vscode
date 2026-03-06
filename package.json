@@ -1,11 +1,11 @@
 {
     "name": "micro-panda",
-    "displayName": "micro-panda",
-    "description": "micro-panda program language for embed system (8 bit and 32 bit)",
-    "version": "0.1.0",
+    "displayName": "Micro Panda",
+    "description": "Syntax highlighting for Micro Panda — a systems language that compiles to C, targeting MCU and hosted platforms",
+    "version": "0.2.0",
     "publisher": "sang",
     "engines": {
-        "vscode": "^1.46.0"
+        "vscode": "^1.74.0"
     },
     "categories": [
         "Programming Languages"
@@ -13,7 +13,7 @@
     "contributes": {
         "languages": [{
             "id": "micro-panda",
-            "aliases": ["mpd", "micro-panda"],
+            "aliases": ["Micro Panda", "mpd"],
             "extensions": [".mpd"],
             "configuration": "./language-configuration.json"
         }],
