@@ -1,14 +1,20 @@
 {
     "name": "micro-panda",
     "displayName": "Micro Panda",
-    "description": "Syntax highlighting for Micro Panda — a systems language that compiles to C, targeting MCU and hosted platforms",
-    "version": "0.2.2",
+    "description": "Syntax highlighting and test runner for Micro Panda — a systems language that compiles to C, targeting MCU and hosted platforms",
+    "version": "0.2.3",
     "publisher": "sang",
     "engines": {
         "vscode": "^1.74.0"
     },
     "categories": [
-        "Programming Languages"
+        "Programming Languages",
+        "Testing"
+    ],
+    "main": "./out/extension.js",
+    "activationEvents": [
+        "onLanguage:micro-panda",
+        "workspaceContains:**/*_test.mpd"
     ],
     "contributes": {
         "languages": [{
@@ -46,6 +52,25 @@
                     "description": "The mpd build target to run"
                 }
             }
-        }]
+        }],
+        "configuration": {
+            "title": "Micro Panda",
+            "properties": {
+                "microPanda.mpdPath": {
+                    "type": "string",
+                    "default": "mpd",
+                    "description": "Path to the mpd compiler executable. Defaults to 'mpd' (must be on PATH)."
+                }
+            }
+        }
+    },
+    "scripts": {
+        "compile": "tsc -p ./",
+        "watch": "tsc -watch -p ./"
+    },
+    "devDependencies": {
+        "@types/node": "^18.0.0",
+        "@types/vscode": "^1.74.0",
+        "typescript": "^5.0.0"
     }
 }

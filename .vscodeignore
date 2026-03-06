@@ -1,0 +1,9 @@
+.git
+node_modules
+src
+tsconfig.json
+.vscodeignore
+pack.sh
+vsc-extension-quickstart.md
+**/*.ts
+**/*.map
