@@ -6,4 +6,4 @@ fun add()
 
 @test
 fun sub()
-    assert(5 - 3 == 4)
+    assert(5 - 3 == 2)

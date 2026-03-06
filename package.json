@@ -2,7 +2,7 @@
     "name": "micro-panda",
     "displayName": "Micro Panda",
     "description": "Syntax highlighting and test runner for Micro Panda — a systems language that compiles to C, targeting MCU and hosted platforms",
-    "version": "0.2.3",
+    "version": "0.2.4",
     "publisher": "sang",
     "engines": {
         "vscode": "^1.74.0"
@@ -53,6 +53,23 @@
                 }
             }
         }],
+        "commands": [
+            {
+                "command": "microPanda.build",
+                "title": "Build",
+                "category": "Micro Panda"
+            },
+            {
+                "command": "microPanda.gen",
+                "title": "Generate C",
+                "category": "Micro Panda"
+            },
+            {
+                "command": "microPanda.run",
+                "title": "Run Target",
+                "category": "Micro Panda"
+            }
+        ],
         "configuration": {
             "title": "Micro Panda",
             "properties": {

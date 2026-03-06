@@ -6,7 +6,8 @@ out: out/
 
 targets:
   main:
-    entry: sample
+    entry: main
     cc: gcc
     cflags: [-O0]
+    flags: [STDC_HOSTED]
     output: bin/sample

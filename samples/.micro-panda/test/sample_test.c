@@ -225,8 +225,8 @@ void sample_test__add(void) {
 }
 
 void sample_test__sub(void) {
-  if (!(((5 - 3) == 4))) {
-    test___test_fail((__Slice_uint8_t){(uint8_t*)"/Users/sang/Dev/panda-io/micro-panda-vscode/samples/sample_test.mpd", 67}, 9, (__Slice_uint8_t){(uint8_t*)"assert(5 - 3 == 4)", 18});
+  if (!(((5 - 3) == 2))) {
+    test___test_fail((__Slice_uint8_t){(uint8_t*)"/Users/sang/Dev/panda-io/micro-panda-vscode/samples/sample_test.mpd", 67}, 9, (__Slice_uint8_t){(uint8_t*)"assert(5 - 3 == 2)", 18});
   } else {
     test___test_pass();
   }

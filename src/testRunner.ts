@@ -2,6 +2,7 @@ import * as vscode from 'vscode';
 import { spawn } from 'child_process';
 import * as path from 'path';
 import * as fs from 'fs';
+import { MicroPandaDiagnostics } from './diagnostics';
 
 interface TestFn {
     name: string;
@@ -12,7 +13,7 @@ export class MicroPandaTestRunner implements vscode.Disposable {
     private readonly controller: vscode.TestController;
     private readonly watcher: vscode.FileSystemWatcher;
 
-    constructor() {
+    constructor(private readonly diagnostics: MicroPandaDiagnostics) {
         this.controller = vscode.tests.createTestController(
             'microPandaTests',
             'Micro Panda'
@@ -181,7 +182,11 @@ export class MicroPandaTestRunner implements vscode.Disposable {
 
             proc.on('close', () => {
                 // Strip ANSI escape codes.
-                const clean = (stdout || stderr).replace(/\x1b\[[0-9;]*m/g, '');
+                const raw = stdout || stderr;
+                const clean = raw.replace(/\x1b\[[0-9;]*m/g, '');
+
+                // Always feed compiler errors into the diagnostic system.
+                this.diagnostics.update(raw);
 
                 const hasResults = /^[PF]:/m.test(clean);
                 if (!hasResults) {
@@ -190,6 +195,7 @@ export class MicroPandaTestRunner implements vscode.Disposable {
                     const msg = new vscode.TestMessage(errText);
                     for (const item of items) { run.errored(item, msg); }
                 } else {
+                    this.diagnostics.clear(); // tests ran — no build errors
                     this.parseResults(clean, items, run);
                 }
 
