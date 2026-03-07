@@ -1,9 +1,0 @@
-import test::*
-
-@test
-fun add()
-    assert(1 + 1 == 2)
-
-@test
-fun sub()
-    assert(5 - 3 == 2)

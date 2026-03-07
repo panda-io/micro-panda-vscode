@@ -140,9 +140,10 @@ export class MicroPandaTestRunner implements vscode.Disposable {
         run: vscode.TestRun,
         token: vscode.CancellationToken
     ): Promise<void> {
-        const workspaceRoot =
-            vscode.workspace.getWorkspaceFolder(vscode.Uri.file(filePath))
-                ?.uri.fsPath ?? path.dirname(filePath);
+        // Walk up from the test file to find the nearest mpd.yaml (project root).
+        const projectRoot = findProjectRoot(path.dirname(filePath))
+            ?? vscode.workspace.getWorkspaceFolder(vscode.Uri.file(filePath))?.uri.fsPath
+            ?? path.dirname(filePath);
 
         const mpdExe = vscode.workspace
             .getConfiguration('microPanda')
@@ -155,7 +156,7 @@ export class MicroPandaTestRunner implements vscode.Disposable {
             let proc: ReturnType<typeof spawn>;
             try {
                 // Pass the absolute file path so mpd finds it regardless of src layout.
-                proc = spawn(mpdExe, ['test', filePath], { cwd: workspaceRoot });
+                proc = spawn(mpdExe, ['test', filePath], { cwd: projectRoot });
             } catch (err) {
                 const msg = new vscode.TestMessage(
                     `Failed to launch mpd: ${err}. ` +
@@ -296,5 +297,20 @@ export class MicroPandaTestRunner implements vscode.Disposable {
     dispose() {
         this.controller.dispose();
         this.watcher.dispose();
+    }
+}
+
+// ── helpers ───────────────────────────────────────────────────────────────────
+
+/** Walk up from [dir] to find the nearest directory containing mpd.yaml. */
+function findProjectRoot(dir: string): string | undefined {
+    let current = dir;
+    while (true) {
+        if (fs.existsSync(path.join(current, 'mpd.yaml'))) {
+            return current;
+        }
+        const parent = path.dirname(current);
+        if (parent === current) { return undefined; } // reached filesystem root
+        current = parent;
     }
 }
