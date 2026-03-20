@@ -86,13 +86,33 @@
         },
 
         "string": {
-            "name": "string.quoted.double.mpd",
-            "begin": "\"",
-            "end": "\"",
             "patterns": [
                 {
-                    "name": "constant.character.escape.mpd",
-                    "match": "\\\\[nrt\\\\\"'0]"
+                    "comment": "Triple-double-quoted string (multi-line)",
+                    "name": "string.quoted.triple.double.mpd",
+                    "begin": "\"\"\"",
+                    "end": "\"\"\"",
+                    "patterns": [
+                        { "name": "constant.character.escape.mpd", "match": "\\\\[nrt\\\\\"'0]" }
+                    ]
+                },
+                {
+                    "comment": "Triple-single-quoted string (multi-line)",
+                    "name": "string.quoted.triple.single.mpd",
+                    "begin": "'''",
+                    "end": "'''",
+                    "patterns": [
+                        { "name": "constant.character.escape.mpd", "match": "\\\\[nrt\\\\\"'0]" }
+                    ]
+                },
+                {
+                    "comment": "Single-line double-quoted string",
+                    "name": "string.quoted.double.mpd",
+                    "begin": "\"",
+                    "end": "\"",
+                    "patterns": [
+                        { "name": "constant.character.escape.mpd", "match": "\\\\[nrt\\\\\"'0]" }
+                    ]
                 }
             ]
         },
