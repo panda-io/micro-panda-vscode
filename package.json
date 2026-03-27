@@ -18,42 +18,57 @@
         "workspaceContains:**/*_test.mpd"
     ],
     "contributes": {
-        "languages": [{
-            "id": "micro-panda",
-            "aliases": ["Micro Panda", "mpd"],
-            "extensions": [".mpd"],
-            "configuration": "./language-configuration.json"
-        }],
-        "grammars": [{
-            "language": "micro-panda",
-            "scopeName": "source.mpd",
-            "path": "./syntaxes/micro-panda.tmLanguage.json"
-        }],
-        "snippets": [{
-            "language": "micro-panda",
-            "path": "./snippets/micro-panda.json"
-        }],
-        "problemMatchers": [{
-            "name": "mpd",
-            "owner": "micro-panda",
-            "fileLocation": "absolute",
-            "pattern": {
-                "regexp": "^(.+):(\\d+):(\\d+): error: (.+)$",
-                "file": 1,
-                "line": 2,
-                "column": 3,
-                "message": 4
+        "languages": [
+            {
+                "id": "micro-panda",
+                "aliases": [
+                    "Micro Panda",
+                    "mpd"
+                ],
+                "extensions": [
+                    ".mpd"
+                ],
+                "configuration": "./language-configuration.json"
             }
-        }],
-        "taskDefinitions": [{
-            "type": "mpd",
-            "properties": {
-                "target": {
-                    "type": "string",
-                    "description": "The mpd build target to run"
+        ],
+        "grammars": [
+            {
+                "language": "micro-panda",
+                "scopeName": "source.mpd",
+                "path": "./syntaxes/micro-panda.tmLanguage.json"
+            }
+        ],
+        "snippets": [
+            {
+                "language": "micro-panda",
+                "path": "./snippets/micro-panda.json"
+            }
+        ],
+        "problemMatchers": [
+            {
+                "name": "mpd",
+                "owner": "micro-panda",
+                "fileLocation": "absolute",
+                "pattern": {
+                    "regexp": "^(.+):(\\d+):(\\d+): error: (.+)$",
+                    "file": 1,
+                    "line": 2,
+                    "column": 3,
+                    "message": 4
                 }
             }
-        }],
+        ],
+        "taskDefinitions": [
+            {
+                "type": "mpd",
+                "properties": {
+                    "target": {
+                        "type": "string",
+                        "description": "The mpd build target to run"
+                    }
+                }
+            }
+        ],
         "commands": [
             {
                 "command": "microPanda.build",
@@ -89,6 +104,10 @@
     "devDependencies": {
         "@types/node": "^18.0.0",
         "@types/vscode": "^1.74.0",
+        "esbuild": "^0.27.4",
         "typescript": "^5.0.0"
+    },
+    "dependencies": {
+        "vscode-languageclient": "^9.0.1"
     }
 }

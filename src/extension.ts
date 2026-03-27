@@ -1,7 +1,10 @@
 import * as vscode from 'vscode';
+import { LanguageClient, LanguageClientOptions, ServerOptions } from 'vscode-languageclient/node';
 import { MicroPandaDiagnostics } from './diagnostics';
 import { MicroPandaBuilder } from './builder';
 import { MicroPandaTestRunner } from './testRunner';
+
+let lspClient: LanguageClient | undefined;
 
 export function activate(context: vscode.ExtensionContext) {
     const diagnostics = new MicroPandaDiagnostics();
@@ -9,6 +12,23 @@ export function activate(context: vscode.ExtensionContext) {
     const testRunner  = new MicroPandaTestRunner(diagnostics);
 
     context.subscriptions.push(diagnostics, builder, testRunner);
+
+    // ── language server ───────────────────────────────────────────────────────
+
+    const mpdPath = vscode.workspace.getConfiguration('microPanda').get<string>('mpdPath', 'mpd');
+
+    const serverOptions: ServerOptions = {
+        command: mpdPath,
+        args: ['lsp'],
+    };
+
+    const clientOptions: LanguageClientOptions = {
+        documentSelector: [{ scheme: 'file', language: 'micro-panda' }],
+    };
+
+    lspClient = new LanguageClient('mpd-lsp', 'Micro-Panda Language Server', serverOptions, clientOptions);
+    lspClient.start();
+    context.subscriptions.push(lspClient);
 
     // ── helper: resolve workspace root ────────────────────────────────────────
     const root = (): string | undefined =>
@@ -47,7 +67,9 @@ export function activate(context: vscode.ExtensionContext) {
     );
 }
 
-export function deactivate() {}
+export function deactivate(): Thenable<void> | undefined {
+    return lspClient?.stop();
+}
 
 // ── helpers ───────────────────────────────────────────────────────────────────
 
