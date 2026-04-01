@@ -27,7 +27,9 @@ export function activate(context: vscode.ExtensionContext) {
     };
 
     lspClient = new LanguageClient('mpd-lsp', 'Micro-Panda Language Server', serverOptions, clientOptions);
-    lspClient.start();
+    lspClient.start().catch(err => {
+        vscode.window.showErrorMessage(`Micro Panda LSP failed to start: ${err}`);
+    });
     context.subscriptions.push(lspClient);
 
     // ── helper: resolve workspace root ────────────────────────────────────────

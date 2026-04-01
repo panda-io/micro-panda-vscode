@@ -2,7 +2,7 @@
     "name": "micro-panda",
     "displayName": "Micro Panda",
     "description": "Syntax highlighting and test runner for Micro Panda — a systems language that compiles to C, targeting MCU and hosted platforms",
-    "version": "0.2.4",
+    "version": "0.2.5",
     "publisher": "sang",
     "engines": {
         "vscode": "^1.74.0"
@@ -98,8 +98,8 @@
         }
     },
     "scripts": {
-        "compile": "tsc -p ./",
-        "watch": "tsc -watch -p ./"
+        "compile": "esbuild src/extension.ts --bundle --outfile=out/extension.js --external:vscode --format=cjs --platform=node",
+        "watch": "esbuild src/extension.ts --bundle --outfile=out/extension.js --external:vscode --format=cjs --platform=node --watch"
     },
     "devDependencies": {
         "@types/node": "^18.0.0",
