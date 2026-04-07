@@ -11,6 +11,12 @@ VS Code extension for the Micro-Panda language (`.mpd` files).
 - Test discovery and execution for `*_test.mpd` files
 - LSP client — spawns `mpd lsp` for diagnostics and completions
 
+## Type keywords (for grammar updates)
+
+Canonical: `bool i8 u8 i16 u16 i32 u32 i64 u64 float q16 void`
+Aliases: `byte` (=u8), `int` (=i32), `fixed` (=q16)
+No f64 — `float` is the only floating-point type.
+
 ## Source layout
 
 | File | Purpose |
